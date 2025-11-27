@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Task 3 - Advanced Styling & JavaScript</title>
+
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        background: #eef2f3;
+    }
+
+    header {
+        background: #003d3d;
+        color: white;
+        padding: 20px;
+        text-align: center;
+        font-size: 24px;
+    }
+
+    .container {
+        padding: 20px;
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+        gap: 20px;
+    }
+
+    .box {
+        background: white;
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
+
+    h2 {
+        color: #003d3d;
+    }
+
+    /* IMAGE CAROUSEL */
+    .carousel {
+        width: 100%;
+        height: 250px;
+        border-radius: 10px;
+        overflow: hidden;
+        position: relative;
+    }
+
+    .carousel img {
+        width: 100%;
+        height: 100%;
+        display: none;
+        object-fit: cover;
+    }
+
+    .carousel img.active {
+        display: block;
+    }
+
+    /* QUIZ BUTTONS */
+    .quiz-btn {
+        padding: 10px 20px;
+        border: none;
+        background: #003d3d;
+        color: white;
+        border-radius: 5px;
+        cursor: pointer;
+        margin-top: 10px;
+    }
+
+    .quiz-btn:hover {
+        background: #006666;
+    }
+
+    /* API BOX */
+    #joke {
+        background: #def3ff;
+        padding: 15px;
+        border-radius: 10px;
+        font-size: 18px;
+    }
+
+    /* ---------------- Responsive Design (Step 1) ---------------- */
+    @media (max-width: 600px) {
+        header {
+            font-size: 20px;
+        }
+
+        .box {
+            padding: 15px;
+        }
+
+        .carousel {
+            height: 200px;
+        }
+    }
+</style>
+
+</head>
+<body>
+
+<header>Task 3 – Advanced Styling & JavaScript</header>
+
+<div class="container">
+
+    <!-- STEP 2: Image Carousel -->
+    <div class="box">
+        <h2>Image Carousel</h2>
+        <div class="carousel">
+            <img src="https://picsum.photos/id/1015/600/300" class="active">
+            <img src="https://picsum.photos/id/1024/600/300">
+            <img src="https://picsum.photos/id/1035/600/300">
+        </div>
+        <button class="quiz-btn" onclick="nextImage()">Next Image</button>
+    </div>
+
+    <!-- STEP 2: Interactive Quiz -->
+    <div class="box">
+        <h2>Simple Quiz</h2>
+        <p id="question">Q1. What does HTML stand for?</p>
+        <button class="quiz-btn" onclick="checkAnswer('correct')">A. HyperText Markup Language</button><br><br>
+        <button class="quiz-btn" onclick="checkAnswer('wrong')">B. HyperType Machine Learning</button><br><br>
+        <p id="quiz-result" style="margin-top:15px; font-weight:bold;"></p>
+    </div>
+
+    <!-- STEP 3: API Fetch -->
+    <div class="box">
+        <h2>Random Joke from API</h2>
+        <p id="joke">Click the button to load a joke...</p>
+        <button class="quiz-btn" onclick="getJoke()">Get Joke</button>
+    </div>
+
+</div>
+
+<script>
+
+/* ---------------- CAROUSEL (Step 2) ---------------- */
+let index = 0;
+function nextImage() {
+    let images = document.querySelectorAll(".carousel img");
+
+    images[index].classList.remove("active");
+    index = (index + 1) % images.length;
+    images[index].classList.add("active");
+}
+
+/* ---------------- QUIZ (Step 2) ---------------- */
+function checkAnswer(answer) {
+    const result = document.getElementById("quiz-result");
+    if (answer === "correct") {
+        result.style.color = "green";
+        result.innerHTML = "Correct Answer! ✔";
+    } else {
+        result.style.color = "red";
+        result.innerHTML = "Wrong Answer! ✘";
+    }
+}
+
+/* ---------------- API Fetch (Step 3) ---------------- */
+async function getJoke() {
+    const jokeBox = document.getElementById("joke");
+
+    jokeBox.innerHTML = "Loading...";
+
+    let response = await fetch("https://official-joke-api.appspot.com/random_joke");
+    let data = await response.json();
+
+    jokeBox.innerHTML = `${data.setup} <br><b>${data.punchline}</b>`;
+}
+
+</script>
+
+</body>
+</html>
