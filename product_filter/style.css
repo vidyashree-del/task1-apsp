@@ -1,0 +1,8 @@
+.product {
+    width: 200px;
+    padding: 15px;
+    background: #fff;
+    margin: 10px;
+    border: 1px solid #ddd;
+    display: inline-block;
+}
