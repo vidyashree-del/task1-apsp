@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Task 2 - Intermediate HTML CSS JS</title>
+
+<style>
+    body {
+        margin: 0;
+        font-family: Arial, sans-serif;
+        background: #eef2f3;
+    }
+
+    /* Navigation */
+    nav {
+        background: #004d4d;
+        color: white;
+        padding: 15px;
+        display: flex;
+        justify-content: space-between;
+    }
+
+    nav a {
+        color: white;
+        margin: 0 10px;
+        text-decoration: none;
+        font-weight: bold;
+    }
+
+    nav a:hover {
+        text-decoration: underline;
+    }
+
+    /* Grid Layout */
+    .container {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+        gap: 20px;
+        padding: 20px;
+    }
+
+    /* Contact Form Card */
+    .card {
+        background: white;
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
+
+    h2 {
+        color: #004d4d;
+        margin-bottom: 10px;
+    }
+
+    input, textarea {
+        width: 100%;
+        padding: 10px;
+        margin: 8px 0;
+        border-radius: 5px;
+        border: 1px solid #ccc;
+    }
+
+    button {
+        padding: 10px 20px;
+        background: #004d4d;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        margin-top: 10px;
+    }
+
+    button:hover {
+        background: #006666;
+    }
+
+    /* To-Do List */
+    ul {
+        padding-left: 20px;
+    }
+
+    li {
+        background: #d9f2f2;
+        padding: 8px;
+        border-radius: 5px;
+        margin-bottom: 6px;
+        display: flex;
+        justify-content: space-between;
+    }
+
+    .remove-btn {
+        background: red;
+        color: white;
+        border: none;
+        padding: 3px 8px;
+        border-radius: 5px;
+        cursor: pointer;
+    }
+</style>
+</head>
+
+<body>
+
+<!-- Navigation -->
+<nav>
+    <div class="logo">Task 2 Project</div>
+    <div>
+        <a href="#">Home</a>
+        <a href="#">Form</a>
+        <a href="#">Gallery</a>
+    </div>
+</nav>
+
+<!-- Main Content -->
+<div class="container">
+
+    <!-- Contact Form (Step 1 + Step 2) -->
+    <div class="card">
+        <h2>Contact Form</h2>
+
+        <label>Name:</label>
+        <input type="text" id="name">
+
+        <label>Email:</label>
+        <input type="email" id="email">
+
+        <label>Message:</label>
+        <textarea id="message"></textarea>
+
+        <button onclick="submitForm()">Submit</button>
+
+        <p id="form-status" style="color:red; margin-top:10px;"></p>
+    </div>
+
+    <!-- To-Do List (Step 4) -->
+    <div class="card">
+        <h2>Dynamic To-Do List</h2>
+
+        <input type="text" id="task-input" placeholder="Enter a task...">
+        <button onclick="addTask()">Add Task</button>
+
+        <ul id="task-list"></ul>
+    </div>
+
+</div>
+
+<script>
+/* -------- FORM VALIDATION (Step 2) -------- */
+function submitForm() {
+    let name = document.getElementById("name").value.trim();
+    let email = document.getElementById("email").value.trim();
+    let message = document.getElementById("message").value.trim();
+    let status = document.getElementById("form-status");
+
+    if (name === "" || email === "" || message === "") {
+        status.style.color = "red";
+        status.innerHTML = "⚠ All fields are required!";
+        return;
+    }
+
+    if (!email.includes("@") || !email.includes(".")) {
+        status.style.color = "red";
+        status.innerHTML = "⚠ Enter a valid email address!";
+        return;
+    }
+
+    status.style.color = "green";
+    status.innerHTML = "✔ Form submitted successfully!";
+}
+
+/* -------- TO-DO LIST (Step 4) -------- */
+function addTask() {
+    let taskText = document.getElementById("task-input").value.trim();
+    if (taskText === "") return;
+
+    let li = document.createElement("li");
+    li.innerHTML = `${taskText} <button class="remove-btn" onclick="removeTask(this)">X</button>`;
+
+    document.getElementById("task-list").appendChild(li);
+
+    document.getElementById("task-input").value = "";
+}
+
+function removeTask(button) {
+    button.parentElement.remove();
+}
+</script>
+
+</body>
+</html>
