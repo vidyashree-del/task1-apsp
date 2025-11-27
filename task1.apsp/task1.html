@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My First Webpage</title>
+
+    <!-- CSS Styling -->
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 20px;
+        }
+
+        header {
+            background: #006666;
+            color: white;
+            padding: 20px;
+            text-align: center;
+            border-radius: 10px;
+        }
+
+        h2 {
+            color: #006666;
+        }
+
+        p {
+            line-height: 1.6;
+        }
+
+        img {
+            width: 300px;
+            border-radius: 10px;
+            margin-top: 10px;
+        }
+
+        a {
+            color: #006666;
+            font-weight: bold;
+        }
+
+        button {
+            background: #006666;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            margin-top: 15px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background: #004d4d;
+        }
+    </style>
+</head>
+
+<body>
+
+    <header>
+        <h1>Welcome to My Webpage</h1>
+    </header>
+
+    <h2>About This Page</h2>
+    <p>
+        This is a simple webpage created as part of **Task-1: Basics of Web Development**.
+        It includes headings, paragraphs, images, links, and basic interactivity using JavaScript.
+    </p>
+
+    <!-- Image -->
+    <img src="https://images.pexels.com/photos/248797/pexels-photo-248797.jpeg" alt="Sample Image">
+
+    <!-- Link -->
+    <p>
+        Visit <a href="https://www.google.com" target="_blank">Google</a> for more information.
+    </p>
+
+    <!-- Interactive Button -->
+    <button onclick="showAlert()">Click Me</button>
+
+    <!-- JavaScript -->
+    <script>
+        function showAlert() {
+            alert("Hello! You clicked the button.");
+        }
+    </script>
+
+</body>
+</html>
