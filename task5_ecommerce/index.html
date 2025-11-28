@@ -1,0 +1,63 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Mini E‑Commerce</title>
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<header class="site-header">
+  <div class="container header-inner">
+    <h1 class="logo">ShopEasy</h1>
+    <div class="controls">
+      <input id="search" placeholder="Search products..." aria-label="Search products" />
+      <select id="category">
+        <option value="all">All Categories</option>
+      </select>
+      <button id="view-cart" aria-label="View cart">Cart (<span id="cart-count">0</span>)</button>
+    </div>
+  </div>
+</header>
+
+<main class="container">
+  <section class="filters">
+    <h2>Filters</h2>
+    <label>Sort:
+      <select id="sort">
+        <option value="default">Default</option>
+        <option value="price-asc">Price: Low → High</option>
+        <option value="price-desc">Price: High → Low</option>
+      </select>
+    </label>
+    <label>
+      Price range:
+      <input id="price-min" type="number" placeholder="min" min="0" />
+      -
+      <input id="price-max" type="number" placeholder="max" min="0" />
+    </label>
+  </section>
+
+  <section id="products-grid" class="products-grid" aria-live="polite">
+    <!-- products injected here -->
+  </section>
+</main>
+
+<!-- Cart Modal -->
+<div id="cart-modal" class="modal" aria-hidden="true">
+  <div class="modal-content">
+    <button class="close" id="close-cart">×</button>
+    <h2>Your Cart</h2>
+    <ul id="cart-items"></ul>
+    <div class="cart-summary">
+      <div>Total: ₹<span id="cart-total">0</span></div>
+      <button id="checkout">Checkout</button>
+      <button id="clear-cart">Clear Cart</button>
+    </div>
+  </div>
+</div>
+
+<script src="products.js"></script>
+<script src="cart.js"></script>
+</body>
+</html>

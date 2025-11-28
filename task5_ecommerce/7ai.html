@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Simple Converter</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/crypto-js.min.js"></script>
+<style>
+  body{font-family:sans-serif;background:#f9f9f9}
+  .box{max-width:500px;margin:30px auto;background:#fff;padding:18px;border-radius:8px}
+  textarea,input{width:100%;margin:7px 0;padding:8px;border:1px solid #ccc;border-radius:5px}
+  button{background:#007bff;color:#fff;border:none;padding:7px 14px;border-radius:5px;cursor:pointer}
+  pre{background:#eee;padding:8px;border-radius:5px;margin-top:5px}
+  .msg{padding:7px;margin:7px 0;border-radius:5px}
+  .ok{background:#cfc}
+  .bad{background:#fcc}
+</style>
+</head>
+<body>
+<div class="box">
+
+<h1>Simple Converter</h1>
+
+<b>JSON → Object:</b>
+<textarea id="jsonInput"></textarea>
+<button onclick="jsonToObj()">Convert</button>
+<pre id="jsonOutput"></pre>
+
+<b>JSON Date Parse:</b>
+<textarea id="jsonDateInput"></textarea>
+<button onclick="jsonToDate()">Parse</button>
+<pre id="jsonDateOutput"></pre>
+
+<b>JSON → CSV:</b>
+<textarea id="jsonCsvInput"></textarea>
+<button onclick="jsonToCsv()">JSON → CSV</button>
+<pre id="csvOutput"></pre>
+
+<b>CSV → JSON:</b>
+<textarea id="csvInput"></textarea>
+<button onclick="csvToJson()">CSV → JSON</button>
+<pre id="jsonCsvOutput"></pre>
+
+<b>SHA-256 Hash:</b>
+<input id="hashInput" type="text">
+<button onclick="makeHash()">Hash</button>
+<pre id="hashOutput"></pre>
+
+</div>
+
+<script>
+const show=(id,msg,ok=true)=>{
+  let e=document.getElementById(id);
+  e.textContent=msg;
+  e.className="msg "+(ok?"ok":"bad");
+};
+
+function jsonToObj(){
+  try{ show("jsonOutput",JSON.stringify(JSON.parse(jsonInput.value),null,2)); }
+  catch{ show("jsonOutput","Invalid JSON",false); }
+}
+
+function jsonToDate(){
+  try{
+    let d=new Date(JSON.parse(jsonDateInput.value).date);
+    if(isNaN(d)) throw 0;
+    show("jsonDateOutput",d.toString());
+  }catch{ show("jsonDateOutput","Invalid date",false); }
+}
+
+function jsonToCsv(){
+  try{
+    let arr=JSON.parse(jsonCsvInput.value);
+    let k=Object.keys(arr[0]);
+    let csv=[k.join(","),...arr.map(o=>k.map(x=>o[x]).join(","))].join("\n");
+    show("csvOutput",csv);
+  }catch{ show("csvOutput","Invalid JSON array",false); }
+}
+
+function csvToJson(){
+  try{
+    let lines=csvInput.value.trim().split("\n");
+    let k=lines[0].split(",");
+    let out=lines.slice(1).map(r=>{
+      let v=r.split(","); let o={};
+      k.forEach((x,i)=>o[x]=v[i]);
+      return o;
+    });
+    show("jsonCsvOutput",JSON.stringify(out,null,2));
+  }catch{ show("jsonCsvOutput","Invalid CSV",false); }
+}
+
+function makeHash(){
+  show("hashOutput",
+       hashInput.value?CryptoJS.SHA256(hashInput.value).toString():"Empty input",
+       hashInput.value!=""
+      );
+}
+</script>
+
+</body>
+</html>

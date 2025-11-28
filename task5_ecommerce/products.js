@@ -1,0 +1,79 @@
+// products.js - product data and rendering logic
+const PRODUCTS = [
+  {id:1, title:"Smartphone X Pro", price:24999, category:"electronics", img:"https://picsum.photos/id/1011/600/400"},
+  {id:2, title:"Wireless Headphones", price:3499, category:"electronics", img:"https://picsum.photos/id/1012/600/400"},
+  {id:3, title:"Running Shoes", price:2999, category:"fashion", img:"https://picsum.photos/id/1013/600/400"},
+  {id:4, title:"Leather Jacket", price:7999, category:"fashion", img:"https://picsum.photos/id/1014/600/400"},
+  {id:5, title:"Coffee Maker", price:4999, category:"home", img:"https://picsum.photos/id/1015/600/400"},
+  {id:6, title:"Classic Watch", price:1999, category:"accessories", img:"https://picsum.photos/id/1016/600/400"}
+];
+
+const categories = Array.from(new Set(PRODUCTS.map(p=>p.category)));
+const categorySelect = document.getElementById('category');
+categories.forEach(cat=>{
+  const opt = document.createElement('option');
+  opt.value = cat; opt.textContent = cat[0].toUpperCase()+cat.slice(1);
+  categorySelect.appendChild(opt);
+});
+
+const productsGrid = document.getElementById('products-grid');
+const searchInput = document.getElementById('search');
+const sortSelect = document.getElementById('sort');
+const priceMin = document.getElementById('price-min');
+const priceMax = document.getElementById('price-max');
+
+function formatPrice(v){ return v.toString(); }
+
+function renderProducts(list){
+  productsGrid.innerHTML = '';
+  if(list.length===0){
+    productsGrid.innerHTML = '<p class="no-results">No products found.</p>';
+    return;
+  }
+  list.forEach(p=>{
+    const card = document.createElement('article');
+    card.className = 'product-card';
+    card.innerHTML = `
+      <img loading="lazy" alt="${p.title}" src="${p.img}">
+      <h3>${p.title}</h3>
+      <p class="price">₹${formatPrice(p.price)}</p>
+      <button class="add-to-cart" data-id="${p.id}">Add to Cart</button>
+    `;
+    productsGrid.appendChild(card);
+  });
+}
+
+function getFiltered(){
+  let q = searchInput.value.trim().toLowerCase();
+  let cat = categorySelect.value;
+  let min = parseFloat(priceMin.value) || 0;
+  let max = parseFloat(priceMax.value) || Infinity;
+  let filtered = PRODUCTS.filter(p=>{
+    return (cat==='all' || p.category===cat)
+      && (p.title.toLowerCase().includes(q))
+      && p.price>=min && p.price<=max;
+  });
+  const sort = sortSelect.value;
+  if(sort==='price-asc') filtered.sort((a,b)=>a.price-b.price);
+  if(sort==='price-desc') filtered.sort((a,b)=>b.price-a.price);
+  return filtered;
+}
+
+function updateView(){ renderProducts(getFiltered()); }
+
+searchInput.addEventListener('input', updateView);
+categorySelect.addEventListener('change', updateView);
+sortSelect.addEventListener('change', updateView);
+priceMin.addEventListener('input', updateView);
+priceMax.addEventListener('input', updateView);
+
+// Initial render
+updateView();
+
+// Delegate add-to-cart clicks
+productsGrid.addEventListener('click', (e)=>{
+  if(e.target.matches('.add-to-cart')){
+    const id = parseInt(e.target.dataset.id,10);
+    addToCartById(id);
+  }
+});
